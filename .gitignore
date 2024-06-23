@@ -18,3 +18,5 @@ buildNumber.properties
 
 # IntelliJ IDEA
 .idea/
+*.iws
+*.iml
