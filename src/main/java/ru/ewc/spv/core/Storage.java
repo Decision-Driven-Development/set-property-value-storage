@@ -31,12 +31,14 @@ public class Storage {
     private long nextSetId = 0;
     private final List<StoredValue> specifications = new ArrayList<>();
 
-    public void add(String set, String property, String value) {
-        this.specifications.add(new StoredValue(String.valueOf(++nextSetId), property, value));
-    }
-
     public void add(StoredValue specification) {
-        this.specifications.add(specification);
+        this.specifications.add(
+            new StoredValue(
+                String.valueOf(++nextSetId),
+                specification.property(),
+                specification.value()
+            )
+        );
     }
 
     public StoredValue get(String set) {

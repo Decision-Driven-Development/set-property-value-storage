@@ -30,16 +30,20 @@ import org.junit.jupiter.api.Test;
 
 public class StorageTest {
     @Test
-    void shouldGetASinglePropertyForASet() {
-        StoredValue expected = new StoredValue("1", "Property", "Value");
+    void shouldGetSetsWithSingleProperties() {
         final Storage actual = storageWith(
             new StoredValue(null, "Property", "Value"),
             new StoredValue(null, "NewProp", "NewValue")
         );
         MatcherAssert.assertThat(
-            "The storage property should be fetched",
+            "The storage property for the first set should be fetched",
             actual.get("1"),
-            Matchers.equalTo(expected)
+            Matchers.equalTo(new StoredValue("1", "Property", "Value"))
+        );
+        MatcherAssert.assertThat(
+            "The storage property for the second set should be fetched",
+            actual.get("2"),
+            Matchers.equalTo(new StoredValue("2", "NewProp", "NewValue"))
         );
     }
 
@@ -47,9 +51,7 @@ public class StorageTest {
         final Storage target = new Storage();
         for (StoredValue specification : specifications) {
             target.add(specification);
-            target.add(specification.set(), specification.property(), specification.value());
         }
         return target;
     }
-
 }
