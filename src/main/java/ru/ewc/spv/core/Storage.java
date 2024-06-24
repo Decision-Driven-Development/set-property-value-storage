@@ -34,7 +34,7 @@ public class Storage {
     public void add(StoredValue specification) {
         this.specifications.add(
             new StoredValue(
-                String.valueOf(++nextSetId),
+                specification.set() == null ? String.valueOf(++nextSetId) : specification.set(),
                 specification.property(),
                 specification.value()
             )
@@ -48,5 +48,11 @@ public class Storage {
             .findFirst()
             .orElse(null);
         return storedValue;
+    }
+
+    public List<StoredValue> getAsList(String set) {
+        return this.specifications.stream()
+            .filter(specification -> set.equals(specification.set()))
+            .toList();
     }
 }

@@ -31,10 +31,7 @@ import org.junit.jupiter.api.Test;
 public class StorageTest {
     @Test
     void shouldGetSetsWithSingleProperties() {
-        final Storage actual = storageWith(
-            new StoredValue(null, "Property", "Value"),
-            new StoredValue(null, "NewProp", "NewValue")
-        );
+        final Storage actual = defaultStorage();
         MatcherAssert.assertThat(
             "The storage property for the first set should be fetched",
             actual.get("1"),
@@ -44,6 +41,28 @@ public class StorageTest {
             "The storage property for the second set should be fetched",
             actual.get("2"),
             Matchers.equalTo(new StoredValue("2", "NewProp", "NewValue"))
+        );
+    }
+
+    @Test
+    void shouldGetSetWithMultipleProperties() {
+        final Storage actual = defaultStorage();
+        MatcherAssert.assertThat(
+            "Should fetch all properties of a set",
+            actual.getAsList("3"),
+            Matchers.hasItems(
+                new StoredValue("3", "Property", "ValueTheThird"),
+                new StoredValue("3", "AnotherProp", "AnotherValue")
+            )
+        );
+    }
+
+    private static Storage defaultStorage() {
+        return storageWith(
+            new StoredValue(null, "Property", "Value"),
+            new StoredValue(null, "NewProp", "NewValue"),
+            new StoredValue(null, "Property", "ValueTheThird"),
+            new StoredValue("3", "AnotherProp", "AnotherValue")
         );
     }
 
