@@ -24,32 +24,20 @@
 
 package ru.ewc.spv.core;
 
-/**
- * I am the main class of the SPV application.
- *
- * @since 0.0.1
- */
-public class Main {
-    /**
-     * The greeting to be used.
-     */
-    private final String greeting;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Test;
 
-    /**
-     * Primary Ctor.
-     *
-     * @param greeting The greeting to be used.
-     */
-    public Main(final String greeting) {
-        this.greeting = greeting;
-    }
-
-    /**
-     * I say hello.
-     *
-     * @return The greeting.
-     */
-    public String sayHello() {
-        return this.greeting;
+public class StorageTest {
+    @Test
+    void shouldCreateASetWithASingleProperty() {
+        final Storage target = new Storage();
+        target.add(null, "Property", "Value");
+        final String actual = target.toString();
+        MatcherAssert.assertThat(
+            "Storage should contain a single property",
+            actual,
+            Matchers.equalToIgnoringCase("[1:Property=Value]")
+        );
     }
 }

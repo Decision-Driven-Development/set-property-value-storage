@@ -24,23 +24,19 @@
 
 package ru.ewc.spv.core;
 
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.jupiter.api.Test;
+public class Storage {
+    private String set;
+    private String property;
+    private String value;
 
-/**
- * Unit-tests for the Main class.
- *
- * @since 0.0.1
- */
-class MainTest {
-    @Test
-    void shouldSayHello() {
-        final String greeting = new Main("Hello, world!").sayHello();
-        MatcherAssert.assertThat(
-            "Unexpected greeting",
-            greeting,
-            Matchers.is("Hello, world!")
-        );
+    public void add(String set, String property, String value) {
+        this.set = "1";
+        this.property = property;
+        this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return "[%s:%s=%s]".formatted(set, property, value);
     }
 }
