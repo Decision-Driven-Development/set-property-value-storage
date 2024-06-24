@@ -24,18 +24,6 @@
 
 package ru.ewc.spv.core;
 
-public class Storage {
-    private String set;
-    private String property;
-    private String value;
+public record StoredValue(String set, String property, String value) {
 
-    public void add(String set, String property, String value) {
-        this.set = "1";
-        this.property = property;
-        this.value = value;
-    }
-
-    public StoredValue get() {
-        return new StoredValue(this.set, this.property, this.value);
-    }
 }

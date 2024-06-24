@@ -30,14 +30,19 @@ import org.junit.jupiter.api.Test;
 
 public class StorageTest {
     @Test
-    void shouldCreateASetWithASingleProperty() {
-        final Storage target = new Storage();
-        target.add(null, "Property", "Value");
-        final String actual = target.toString();
+    void shouldGetASinglePropertyForASet() {
+        StoredValue expected = new StoredValue("1", "Property", "Value");
         MatcherAssert.assertThat(
-            "Storage should contain a single property",
-            actual,
-            Matchers.equalToIgnoringCase("[1:Property=Value]")
+            "The storage property should be fetched",
+            storageWith("Property", "Value").get(),
+            Matchers.equalTo(expected)
         );
     }
+
+    private static Storage storageWith(String property, String value) {
+        final Storage target = new Storage();
+        target.add(null, property, value);
+        return target;
+    }
+
 }
