@@ -28,36 +28,50 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
-public class StorageTest {
+/**
+ * I am a test for the {@link InMemoryStorage} class.
+ *
+ * @since 0.0.1
+ */
+final class InMemoryStorageTest {
     @Test
     void shouldGetSetsWithSingleProperties() {
-        final Storage actual = defaultStorage();
+        final InMemoryStorage actual = defaultStorage();
         MatcherAssert.assertThat(
             "The storage property for the first set should be fetched",
-            actual.get("1"),
-            Matchers.equalTo(new StoredValue("1", "Property", "Value"))
+            actual.getAsList("1"),
+            Matchers.allOf(
+                Matchers.iterableWithSize(1),
+                Matchers.hasItems(new StoredValue("1", "Property", "Value"))
+            )
         );
         MatcherAssert.assertThat(
             "The storage property for the second set should be fetched",
-            actual.get("2"),
-            Matchers.equalTo(new StoredValue("2", "NewProp", "NewValue"))
+            actual.getAsList("2"),
+            Matchers.allOf(
+                Matchers.iterableWithSize(1),
+                Matchers.hasItems(new StoredValue("2", "NewProp", "NewValue"))
+            )
         );
     }
 
     @Test
     void shouldGetSetWithMultipleProperties() {
-        final Storage actual = defaultStorage();
+        final InMemoryStorage actual = defaultStorage();
         MatcherAssert.assertThat(
             "Should fetch all properties of a set",
             actual.getAsList("3"),
-            Matchers.hasItems(
-                new StoredValue("3", "Property", "ValueTheThird"),
-                new StoredValue("3", "AnotherProp", "AnotherValue")
+            Matchers.allOf(
+                Matchers.iterableWithSize(2),
+                Matchers.hasItems(
+                    new StoredValue("3", "Property", "ValueTheThird"),
+                    new StoredValue("3", "AnotherProp", "AnotherValue")
+                )
             )
         );
     }
 
-    private static Storage defaultStorage() {
+    private static InMemoryStorage defaultStorage() {
         return storageWith(
             new StoredValue(null, "Property", "Value"),
             new StoredValue(null, "NewProp", "NewValue"),
@@ -66,10 +80,10 @@ public class StorageTest {
         );
     }
 
-    private static Storage storageWith(StoredValue... specifications) {
-        final Storage target = new Storage();
-        for (StoredValue specification : specifications) {
-            target.add(specification);
+    private static InMemoryStorage storageWith(final StoredValue... specifications) {
+        final InMemoryStorage target = new InMemoryStorage();
+        for (final StoredValue spec : specifications) {
+            target.add(spec);
         }
         return target;
     }
