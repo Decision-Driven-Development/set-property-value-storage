@@ -24,18 +24,27 @@
 
 package ru.ewc.spv.core;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Storage {
-    private String set;
-    private String property;
-    private String value;
+    private long nextSetId = 0;
+    private final List<StoredValue> specifications = new ArrayList<>();
 
     public void add(String set, String property, String value) {
-        this.set = "1";
-        this.property = property;
-        this.value = value;
+        this.specifications.add(new StoredValue(String.valueOf(++nextSetId), property, value));
     }
 
-    public StoredValue get() {
-        return new StoredValue(this.set, this.property, this.value);
+    public void add(StoredValue specification) {
+        this.specifications.add(specification);
+    }
+
+    public StoredValue get(String set) {
+        StoredValue storedValue;
+        storedValue = this.specifications.stream()
+            .filter(specification -> set.equals(specification.set()))
+            .findFirst()
+            .orElse(null);
+        return storedValue;
     }
 }

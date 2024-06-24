@@ -32,16 +32,23 @@ public class StorageTest {
     @Test
     void shouldGetASinglePropertyForASet() {
         StoredValue expected = new StoredValue("1", "Property", "Value");
+        final Storage actual = storageWith(
+            new StoredValue(null, "Property", "Value"),
+            new StoredValue(null, "NewProp", "NewValue")
+        );
         MatcherAssert.assertThat(
             "The storage property should be fetched",
-            storageWith("Property", "Value").get(),
+            actual.get("1"),
             Matchers.equalTo(expected)
         );
     }
 
-    private static Storage storageWith(String property, String value) {
+    private static Storage storageWith(StoredValue... specifications) {
         final Storage target = new Storage();
-        target.add(null, property, value);
+        for (StoredValue specification : specifications) {
+            target.add(specification);
+            target.add(specification.set(), specification.property(), specification.value());
+        }
         return target;
     }
 
